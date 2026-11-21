@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Museos | Curaduría &amp; Patrimonio Cultural</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Barra Superior -->
+<div class="top-announcement">
+    SISTEMA INTEGRAL DE CURADURÍA, CONSERVACIÓN Y PATRIMONIO ARTÍSTICO
+</div>
+
+<!-- Navegación Superior Fija (Anclas directas a cada sección) -->
+<header class="navbar">
+    <div class="nav-brand">
+        <span class="brand-title">GESTIÓN DE MUSEOS</span>
+        <span class="brand-sub">CURADURÍA &amp; PATRIMONIO CULTURAL</span>
+    </div>
+    <nav class="nav-links">
+        <a href="#sec-obras" class="nav-btn active" onclick="marcarActivo(this)">Colección &amp; Obras</a>
+        <a href="#sec-museos" class="nav-btn" onclick="marcarActivo(this)">Sedes</a>
+        <a href="#sec-salas" class="nav-btn" onclick="marcarActivo(this)">Salas</a>
+        <a href="#sec-artistas" class="nav-btn" onclick="marcarActivo(this)">Artistas</a>
+        <a href="#sec-categorias" class="nav-btn" onclick="marcarActivo(this)">Categorías</a>
+        <a href="#sec-recorridos" class="nav-btn" onclick="marcarActivo(this)">Recorridos</a>
+        <a href="#sec-historial" class="nav-btn" onclick="marcarActivo(this)">Trazabilidad</a>
+    </nav>
+</header>
+
+<!-- Hero Editorial (Estructura del primer diseño + Paleta oscura del segundo) -->
+<section class="hero-editorial">
+    <div class="hero-content">
+        <p class="hero-kicker">DONDE EL ARTE INSPIRA HISTORIAS ETERNAS</p>
+        <h1 class="hero-title">PATRIMONIO<br>&amp; MEMORIA VIVA</h1>
+        <div class="hero-grid-caption">
+            <p class="hero-desc">
+                Explora obras maestras, cataloga colecciones históricas y gestiona el estado de conservación y exhibición de cada sala museística en un solo espacio curatorial.
+            </p>
+            <a href="#sec-obras" class="btn-editorial"><span>Explorar Colección &rarr;</span></a>
+        </div>
+    </div>
+</section>
+
+<!-- Franja de Accesos Rápidos -->
+<section class="highlights-bar">
+    <a href="#sec-obras" class="highlight-item">
+        <span>01. CATÁLOGO MAESTRO</span>
+        <small>Pinturas y Esculturas</small>
+    </a>
+    <a href="#sec-salas" class="highlight-item">
+        <span>02. ESPACIOS DE GALERÍA</span>
+        <small>Salas y Aforos</small>
+    </a>
+    <a href="#sec-recorridos" class="highlight-item">
+        <span>03. EXPERIENCIAS GUIADAS</span>
+        <small>Rutas Curatoriales</small>
+    </a>
+    <a href="#sec-historial" class="highlight-item">
+        <span>04. ARCHIVO HISTÓRICO</span>
+        <small>Movimientos de Sala</small>
+    </a>
+</section>
+
+<!-- Contenedor Principal (Todas las secciones visibles en una sola página) -->
+<main id="workspace" class="container">
+
+    <!-- 1. OBRAS -->
+    <section id="sec-obras" class="page-section">
+        <div class="section-header">
+            <span class="section-tag">01 · COLECCIÓN PERMANENTE</span>
+            <h2>Catálogo de Obras &amp; Conservación</h2>
+        </div>
+        <div class="grid-2-wide">
+            <div class="card">
+                <h3>Catalogar Nueva Pieza</h3>
+                <form id="form-obra" onsubmit="guardarObra(event)">
+                    <div class="form-group-title">I. Ubicación y Autoría (Paso Inicial)</div>
+                    <p class="form-hint">Selecciona primero el artista, la categoría y la sala donde estará la pieza.</p>
+
+                    <div class="row-3">
+                        <div>
+                            <label>Artista Autor</label>
+                            <div class="select-with-add">
+                                <select id="obra-artista" onchange="verificarPasoInicial()" required></select>
+                                <a href="#sec-artistas" class="btn-mini-add" title="Ir a Artistas">+</a>
+                            </div>
+                        </div>
+                        <div>
+                            <label>Categoría</label>
+                            <div class="select-with-add">
+                                <select id="obra-categoria" onchange="verificarPasoInicial()" required></select>
+                                <a href="#sec-categorias" class="btn-mini-add" title="Ir a Categorías">+</a>
+                            </div>
+                        </div>
+                        <div>
+                            <label>Sala Actual</label>
+                            <div class="select-with-add">
+                                <select id="obra-sala" onchange="verificarPasoInicial()" required></select>
+                                <a href="#sec-salas" class="btn-mini-add" title="Ir a Salas">+</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="paso-datos-obra" class="step-locked">
+                        <div class="form-group-title">II. Identificación de la Pieza</div>
+                        <div class="row-2">
+                            <div>
+                                <label>Clasificación de Pieza</label>
+                                <select id="obra-tipo" onchange="toggleCamposObra()" required>
+                                    <option value="PINTURA">Pintura (Lienzo / Tabla)</option>
+                                    <option value="ESCULTURA">Escultura (Volumen / Talla)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Título de la Obra</label>
+                                <input type="text" id="obra-nombre" placeholder="Ej. La Monja" required>
+                            </div>
+                        </div>
+
+                        <label>Descripción Curatorial</label>
+                        <textarea id="obra-desc" rows="2" placeholder="Contexto histórico, estilo y detalles visuales..."></textarea>
+
+                        <div class="row-2">
+                            <div>
+                                <label>Estado de Conservación (%)</label>
+                                <input type="number" id="obra-conservacion" min="0" max="100" value="95" required>
+                            </div>
+                            <div>
+                                <label>URL de Imagen (Opcional)</label>
+                                <input type="url" id="obra-imagen" placeholder="https://museo.org/obra.jpg">
+                            </div>
+                        </div>
+
+                        <div class="row-2">
+                            <div>
+                                <label>Fecha de Creación</label>
+                                <input type="date" id="obra-fecha-creacion">
+                            </div>
+                            <div>
+                                <label>Fecha de Adquisición</label>
+                                <input type="date" id="obra-fecha-adquisicion">
+                            </div>
+                        </div>
+
+                        <div class="form-group-title">III. Especificaciones Técnicas</div>
+                        <div id="campos-pintura" class="sub-panel">
+                            <div class="row-2">
+                                <div>
+                                    <label>Técnica Pictórica</label>
+                                    <input type="text" id="pintura-tecnica" placeholder="Óleo sobre lienzo">
+                                </div>
+                                <div>
+                                    <label>Dimensiones (cm)</label>
+                                    <input type="text" id="pintura-dimensiones" placeholder="120 x 90 cm">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="campos-escultura" class="sub-panel" style="display:none;">
+                            <div class="row-2">
+                                <div>
+                                    <label>Material Principal</label>
+                                    <input type="text" id="escultura-material" placeholder="Bronce / Mármol">
+                                </div>
+                                <div>
+                                    <label>Peso Estimado (kg)</label>
+                                    <input type="number" step="0.1" id="escultura-peso" placeholder="45.5">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary"><span>Registrar en Colección</span></button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Inventario &amp; Estado Técnico</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Formato</th>
+                            <th>Artista</th>
+                            <th>Ubicación</th>
+                            <th>Conservación</th>
+                            <th>Acción</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tabla-obras"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="editorial-divider">
+
+    <!-- 2. MUSEOS -->
+    <section id="sec-museos" class="page-section">
+        <div class="section-header">
+            <span class="section-tag">02 · INSTITUCIONES CULTURALES</span>
+            <h2>Sedes &amp; Museos Asociados</h2>
+        </div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>Registrar Sede Museística</h3>
+                <form id="form-museo" onsubmit="guardarMuseo(event)">
+                    <label>Nombre Oficial del Museo</label>
+                    <input type="text" id="museo-nombre" placeholder="Ej. Museo Nacional de Arte" required>
+
+                    <label>Reseña Institucional</label>
+                    <textarea id="museo-desc" rows="2" placeholder="Historia y enfoque cultural de la sede..."></textarea>
+
+                    <label>Página Web Oficial (URL)</label>
+                    <input type="url" id="museo-url" placeholder="https://www.museonacional.gov.co">
+
+                    <div class="row-2">
+                        <div>
+                            <label>Latitud Geográfica</label>
+                            <input type="number" step="any" id="museo-lat" placeholder="4.6156">
+                        </div>
+                        <div>
+                            <label>Longitud Geográfica</label>
+                            <input type="number" step="any" id="museo-lng" placeholder="-74.0683">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary"><span>Guardar Sede</span></button>
+                </form>
+            </div>
+            <div class="card">
+                <h3>Sedes Activas</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Institución</th>
+                            <th>Coordenadas</th>
+                            <th>Sitio Web</th>
+                            <th>Acción</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tabla-museos"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="editorial-divider">
+
+    <!-- 3. SALAS -->
+    <section id="sec-salas" class="page-section">
+        <div class="section-header">
+            <span class="section-tag">03 · ARQUITECTURA INTERIOR</span>
+            <h2>Salas de Exposición</h2>
+        </div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>Habilitar Nueva Sala</h3>
+                <form id="form-sala" onsubmit="guardarSala(event)">
+                    <label>Nombre de la Sala</label>
+                    <input type="text" id="sala-nombre" placeholder="Ej. Galería del Barroco" required>
+                    <label>Temática Curatorial</label>
+                    <textarea id="sala-desc" rows="2"></textarea>
+                    <div class="row-2">
+                        <div>
+                            <label>Aforo Máximo</label>
+                            <input type="number" id="sala-capacidad" min="1" value="35" required>
+                        </div>
+                        <div>
+                            <label>Sede Perteneciente</label>
+                            <select id="sala-museo" required></select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary"><span>Guardar Sala</span></button>
+                </form>
+            </div>
+            <div class="card">
+                <h3>Galerías Disponibles</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Sala</th>
+                            <th>Aforo</th>
+                            <th>Museo</th>
+                            <th>Acción</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tabla-salas"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="editorial-divider">
+
+    <!-- 4. ARTISTAS -->
+    <section id="sec-artistas" class="page-section">
+        <div class="section-header">
+            <span class="section-tag">04 · AUTORES &amp; MAESTROS</span>
+            <h2>Directorio de Artistas</h2>
+        </div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>Registrar Artista</h3>
+                <form id="form-artista" onsubmit="guardarArtista(event)">
+                    <label>Nombre Completo</label>
+                    <input type="text" id="artista-nombre" placeholder="Ej. Débora Arango" required>
+                    <label>Nacionalidad</label>
+                    <input type="text" id="artista-nac" placeholder="Colombiana" required>
+                    <label>Biografía Breve</label>
+                    <textarea id="artista-bio" rows="3"></textarea>
+                    <button type="submit" class="btn-primary"><span>Guardar Artista</span></button>
+                </form>
+            </div>
+            <div class="card">
+                <h3>Autores Catalogados</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Nacionalidad</th>
+                            <th>Acción</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tabla-artistas"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="editorial-divider">
+
+    <!-- 5. CATEGORÍAS -->
+    <section id="sec-categorias" class="page-section">
+        <div class="section-header">
+            <span class="section-tag">05 · TAXONOMÍA ARTÍSTICA</span>
+            <h2>Categorías &amp; Corrientes</h2>
+        </div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>Nueva Categoría</h3>
+                <form id="form-categoria" onsubmit="guardarCategoria(event)">
+                    <label>Nombre de Categoría</label>
+                    <input type="text" id="cat-nombre" placeholder="Ej. Arte Colonial" required>
+                    <label>Descripción</label>
+                    <textarea id="cat-desc" rows="2"></textarea>
+                    <button type="submit" class="btn-primary"><span>Guardar Categoría</span></button>
+                </form>
+            </div>
+            <div class="card">
+                <h3>Clasificaciones</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Categoría</th>
+                            <th>Descripción</th>
+                            <th>Acción</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tabla-categorias"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="editorial-divider">
+
+    <!-- 6. RECORRIDOS -->
+    <section id="sec-recorridos" class="page-section">
+        <div class="section-header">
+            <span class="section-tag">06 · EXPERIENCIAS GUIADAS</span>
+            <h2>Diseño de Recorridos Curatoriales</h2>
+        </div>
+        <div class="grid-2">
+            <div class="card">
+                <h3>Crear Ruta Guiada</h3>
+                <form id="form-recorrido" onsubmit="guardarRecorrido(event)">
+                    <label>Título del Recorrido</label>
+                    <input type="text" id="rec-nombre" placeholder="Ej. Maestros de la Luz" required>
+                    <label>Guion Curatorial</label>
+                    <textarea id="rec-desc" rows="2"></textarea>
+                    <label>Enlace Audioguía (URL)</label>
+                    <input type="url" id="rec-url" placeholder="https://museo.org/audioguia">
+                    <label>Selecciona las Salas en Orden:</label>
+                    <div id="checklist-salas" class="checklist-salas"></div>
+                    <button type="submit" class="btn-primary"><span>Publicar Recorrido</span></button>
+                </form>
+            </div>
+            <div class="card">
+                <h3>Itinerarios Activos</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Recorrido</th>
+                            <th>Orden</th>
+                            <th>Sala</th>
+                            <th>Acción</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tabla-recorridos"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <hr class="editorial-divider">
+
+    <!-- 7. HISTORIAL -->
+    <section id="sec-historial" class="page-section">
+        <div class="section-header">
+            <span class="section-tag">07 · REGISTRO DE MOVIMIENTOS</span>
+            <h2>Historial de Exhibición en Sala</h2>
+        </div>
+        <div class="card">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Obra</th>
+                        <th>Sala Asignada</th>
+                        <th>Fecha de Ingreso</th>
+                        <th>Fecha de Retiro</th>
+                        <th>Acción</th>
+                    </tr>
+                    </thead>
+                    <tbody id="tabla-historial"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- Footer Editorial -->
+<footer class="editorial-footer">
+    <div class="footer-inner">
+        <h2>Adéntrate en un mundo de Arte &amp; Patrimonio</h2>
+        <p>Preservando la historia visual y escultórica para las futuras generaciones.</p>
+        <a href="#sec-obras" class="btn-outline-light"><span>Volver al Inicio &uarr;</span></a>
+    </div>
+</footer>
+
+<div id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
